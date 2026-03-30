@@ -42,13 +42,13 @@ Key test IDs: `TC_API_PART_*`, `TC_API_CAT_*`, `TC_API_AUTHZ_*`, `TC_API_NEG_*`
 
 | What's inside | Description |
 |---|---|
-| `tests/` | 7 spec files covering part creation (happy path, validation, duplicates) and cross-functional flows (CF-001, TC_CF_002) |
+| `tests/` | 8 spec files covering part creation (happy path, validation, duplicates), part category navigation, and cross-functional flows (CF-001, TC_CF_002) |
 | `pages/` | 5 page objects: `PartsPage`, `AddPartModalPage`, `AddParameterModalPage`, `AddStockItemModalPage`, `PartDetailPage` |
 | `fixtures/ui.fixtures.ts` | `authenticatedPage` fixture — logs in as `allaccess` before each test |
 | `playwright.config.ts` | Single project: `chromium` (Desktop Chrome), sequential execution |
 | `README.md` | How to run, test file table with IDs and coverage, page object descriptions, design decisions |
 
-Key test IDs: `TC_PART_CREATE_001`, `TC_PART_CREATE_001_NEG1`, `TC_PART_CREATE_001_NEG2`, `TC_PART_CREATE_016`, `CF-001`, `TC_CF_002`
+Key test IDs: `TC_PART_CREATE_001`, `TC_PART_CREATE_001_NEG1`, `TC_PART_CREATE_001_NEG2`, `TC_PART_CREATE_016`, `TC_PART_CAT_002`, `TC_PART_CAT_003`, `CF-001`, `TC_CF_002`
 
 ---
 
@@ -72,6 +72,7 @@ Test plans produced by the Playwright MCP planner agent and refined manually.
 | `TC_PART_CREATE_001-test-plan.md` | Test plan for happy path and validation scenarios when creating a part (UI) |
 | `TC_PART_CREATE_016-test-plan.md` | Test plan for duplicate part name rejection (UI) |
 | `TC_CF_002-test-plan.md` | Test plan for the Assembly BOM → Build Order → Stock Reconciliation cross-functional flow (UI) |
+| `TC_PART_CAT_002_003-test-plan.md` | Test plan for part category navigation: listing direct sub-categories and navigating to Part Detail View (UI) |
 | `cross-functional-flow-test-plan.md` | Broader cross-functional test plan covering CF-001 and TC_CF_002 scenarios |
 | `README.md` | Short note on the specs directory purpose |
 

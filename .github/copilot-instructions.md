@@ -19,6 +19,16 @@ More detailed instructions are scoped to each workspace — Copilot will apply t
 
 Always read the relevant scoped instructions file before generating tests for either workspace.
 
+## Subagent Invocation Rules
+Scoped instruction files are **not** automatically injected into subagents. When invoking any subagent (e.g. `playwright-test-generator`, `playwright-test-healer`, `playwright-test-planner`):
+
+1. **Read the scoped instructions file first** using `read_file` before constructing the subagent prompt.
+2. **Include the full content of the scoped instructions** in the subagent prompt — either inline or as an explicit instruction to read the file at the start of execution.
+3. For UI subagents, always include: *"Before writing any code, read and follow all rules in `.github/instructions/ui.instructions.md`"*
+4. For API subagents, always include: *"Before writing any code, read and follow all rules in `.github/instructions/api.instructions.md`"*
+
+Failure to pass scoped instructions to subagents will result in missing page objects, wrong imports, raw selectors in spec files, and other policy violations.
+
 ## General Rules
 - Always check the OpenAPI spec at `docs\Inventree_API_schema.yaml` before writing API-related code or tests
 - Follow existing naming conventions in each workspace

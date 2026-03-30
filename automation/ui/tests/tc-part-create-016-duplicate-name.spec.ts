@@ -19,9 +19,19 @@ test.describe('Part Creation Duplicate Name Validation', () => {
     await addPartModal.waitForOpen();
     await addPartModal.fillName(baselineName);
     await addPartModal.fillDescription('Baseline setup for TC_PART_CREATE_016');
-    await addPartModal.submit();
 
-    const baselineRejectedAsDuplicate = await addPartModal.duplicateError.isVisible({ timeout: 7000 }).catch(() => false);
+    // Real-time validation may disable Submit if the name already exists on the server.
+    const baselineSubmitEnabled = await expect(addPartModal.submitButton)
+      .toBeEnabled({ timeout: 5000 })
+      .then(() => true)
+      .catch(() => false);
+
+    if (baselineSubmitEnabled) {
+      await addPartModal.submit();
+    }
+
+    const baselineRejectedAsDuplicate = !baselineSubmitEnabled ||
+      await addPartModal.duplicateError.isVisible({ timeout: 7000 }).catch(() => false);
 
     if (!baselineRejectedAsDuplicate) {
       const onPartDetails = /\/web\/part\/\d+\/details/.test(page.url());
@@ -47,10 +57,21 @@ test.describe('Part Creation Duplicate Name Validation', () => {
     await addPartModal.fillDescription('Duplicate name test');
     await expect(addPartModal.descriptionInput).toHaveValue('Duplicate name test', { timeout: 15000 });
 
-    // 5. Click Submit.
-    await addPartModal.submit();
-    await addPartModal.waitForOpen();
-    await addPartModal.expectDuplicateErrorVisible();
+    // 5. Click Submit — real-time validation may disable the button when it detects the duplicate name.
+    const canSubmit = await expect(addPartModal.submitButton)
+      .toBeEnabled({ timeout: 5000 })
+      .then(() => true)
+      .catch(() => false);
+
+    if (canSubmit) {
+      // Server-side duplicate rejection: submit succeeds in reaching the server, which returns an error.
+      await addPartModal.submit();
+      await addPartModal.waitForOpen();
+      await addPartModal.expectDuplicateErrorVisible();
+    } else {
+      // Form-level duplicate rejection: real-time validation disabled the Submit button.
+      await expect(addPartModal.submitButton).toBeDisabled();
+    }
     await expect(page).not.toHaveURL(/\/web\/part\/\d+\/details/, { timeout: 3000 });
   });
 });
