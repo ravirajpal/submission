@@ -1,0 +1,14 @@
+{
+  "servers": {
+    "playwright-test": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "automation/ui/node_modules/@playwright/test/cli.js",
+        "run-test-mcp-server",
+        "--config=automation/ui/playwright.config.ts"
+      ]
+    }
+  },
+  "inputs": []
+}
