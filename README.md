@@ -101,6 +101,55 @@ Screen recordings demonstrating test generation and execution workflows.
 
 ---
 
+## Agent Artifacts
+
+All AI agent configuration, prompts, and instructions used to produce this submission.
+
+### `.github/copilot-instructions.md` — root agent config
+
+The top-level system instruction file loaded by GitHub Copilot for every conversation in this workspace. It establishes:
+- Project overview and workspace layout (`automation/api/`, `automation/ui/`)
+- Pointers to the OpenAPI spec and requirements doc
+- The scoped-instruction pattern: Copilot automatically loads `api.instructions.md` when working in `automation/api/**` and `ui.instructions.md` when working in `automation/ui/**`
+- Hard rules (no mixed dependencies, no merged configs, always check the spec first)
+
+### `.github/instructions/api.instructions.md` — API test instructions
+
+Scoped to `automation/api/**`. Loaded automatically by Copilot when working on API tests. Contains:
+- Stack declaration (Playwright API mode, TypeScript, DRF/InvenTree)
+- The "golden rule": always read `docs/Inventree_API_schema.yaml` before writing tests
+- Project structure map and file-naming conventions
+- Full fixture API documentation (available fixtures, how to extend)
+- Test-writing patterns, data-driven approach, `.env` variable usage
+
+### `.github/instructions/ui.instructions.md` — UI test instructions
+
+Scoped to `automation/ui/**`. Loaded automatically by Copilot when working on UI tests. Contains:
+- Agent workflow: how to resolve a test case ID → manual test → automated spec
+- Stack declaration (Playwright E2E, Chromium, Page Object Model)
+- Mandatory fixture policy (`authenticatedPage`, never import from `@playwright/test` directly)
+- Page object conventions and spec file naming rules
+- Login/credential handling via `.env`
+
+### `.github/agents/` — custom Playwright agent modes
+
+Three `.agent.md` files that define purpose-built Copilot agents, each with a restricted tool set and an optional model pin:
+
+| Agent | Purpose |
+|---|---|
+| `playwright-test-planner.agent.md` | Browses the live InvenTree app and produces structured test plans |
+| `playwright-test-generator.agent.md` | Takes a test plan item and writes the Playwright spec file |
+| `playwright-test-healer.agent.md` | Debugs failing tests using `test_run`, `test_debug`, and browser inspection tools; pinned to Claude Sonnet 4.6 |
+
+### Manual test case instructions
+
+Manual test case generation was driven by the same Copilot session using:
+- `docs/InvenTree_Part_Module_Requirements_Understanding.md` — requirements understanding fed into prompts
+- `docs/Inventree_API_schema.yaml` — spec used as ground truth for API manual tests
+- Output stored in `test-cases/ui-manual-tests.md` and `test-cases/api-manual-tests.xlsx`
+
+---
+
 ## Quick Start
 
 ### API Tests
