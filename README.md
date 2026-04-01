@@ -10,6 +10,7 @@ Target application: [InvenTree Demo](https://demo.inventree.org) — open-source
 
 ```
 submission/
+├── agents/           # Prompts/instructions used for manual test case generation
 ├── automation/
 │   ├── api/          # API test suite (Playwright, TypeScript)
 │   └── ui/           # UI E2E test suite (Playwright, TypeScript)
@@ -18,6 +19,17 @@ submission/
 ├── test-cases/       # Manual test cases
 └── video/            # Screen recordings
 ```
+
+---
+
+## agents/
+
+Prompts and instructions used to generate manual test cases via AI-assisted workflows.
+
+| File | Description |
+|---|---|
+| `api-manual-test-generation-instructions.md` | Instructions/prompt used to generate the API manual test cases |
+| `ui-manual-test-generation-instructions.md` | Instructions/prompt used to generate the UI manual test cases |
 
 ---
 
